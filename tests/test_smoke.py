@@ -1,0 +1,3 @@
+def test_smoke_imports():
+    import sys
+    assert sys.version_info.major >= 3
