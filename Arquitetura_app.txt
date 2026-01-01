@@ -1,0 +1,230 @@
+
+doc/ARQUITETURA.md`
+
+---
+
+# Documento de Arquitetura
+
+## Mercadofinanceiro_app
+
+---
+
+## 1. Visão Geral da Arquitetura
+
+O **Mercadofinanceiro_app** adota uma arquitetura **modular, evolutiva e orientada a componentes**, desenhada para suportar **engenharia financeira**, **automação analítica** e **agentes de IA**, mantendo controle de risco, governança e clareza operacional.
+
+A arquitetura separa explicitamente:
+
+* **Exploração** vs **Produção**
+* **Decisão** vs **Processamento**
+* **Dados** vs **Lógica de Negócio**
+
+Essa separação é intencional e visa **evitar acoplamento prematuro**, facilitando testes, escalabilidade e substituição tecnológica ao longo do tempo.
+
+---
+
+## 2. Princípios Arquiteturais
+
+Os princípios abaixo guiam todas as decisões técnicas do projeto:
+
+1. **Modularidade**
+
+   * Componentes independentes e substituíveis
+2. **Single Responsibility**
+
+   * Cada módulo tem uma responsabilidade clara
+3. **Evolução Incremental**
+
+   * A arquitetura cresce conforme a maturidade do uso
+4. **Governança por Design**
+
+   * Estrutura que reduz riscos operacionais desde o início
+5. **Preparação para Produção**
+
+   * Mesmo em fase experimental, o código segue padrões de produção
+
+---
+
+## 3. Visão Lógica da Arquitetura
+
+```text
+┌──────────────────────┐
+│     Notebooks        │
+│ Exploração / Análise │
+└─────────┬────────────┘
+          │
+          ▼
+┌──────────────────────┐
+│      Pipelines       │
+│ Processamento Dados  │
+└─────────┬────────────┘
+          │
+          ▼
+┌──────────────────────┐
+│        Models        │
+│ Estatístico / ML    │
+└─────────┬────────────┘
+          │
+          ▼
+┌──────────────────────┐
+│        Agents        │
+│ Decisão / Automação │
+└─────────┬────────────┘
+          │
+          ▼
+┌──────────────────────┐
+│   Outputs / Actions  │
+│ Métricas / Sinais   │
+└──────────────────────┘
+```
+
+---
+
+## 4. Visão Física (Estrutura de Diretórios)
+
+```text
+src/
+├── agents/
+│   └── financial_agent.py
+├── pipelines/
+│   └── market_pipeline.py
+├── models/
+│   └── pricing_model.py
+├── data/
+│   └── data_loader.py
+├── utils/
+│   └── helpers.py
+├── config/
+│   └── settings.py
+```
+
+### Responsabilidade por Camada
+
+| Camada      | Responsabilidade                              |
+| ----------- | --------------------------------------------- |
+| `agents`    | Tomada de decisão, regras, lógica de controle |
+| `pipelines` | Orquestração de fluxo de dados                |
+| `models`    | Modelos estatísticos, ML ou híbridos          |
+| `data`      | Abstração de fontes de dados                  |
+| `utils`     | Funções reutilizáveis                         |
+| `config`    | Parâmetros e configurações                    |
+
+---
+
+## 5. Fluxo de Dados
+
+1. **Entrada**
+
+   * Dados de mercado (externos ou simulados)
+2. **Pipeline**
+
+   * Limpeza, normalização e enriquecimento
+3. **Modelos**
+
+   * Cálculo de indicadores, previsões ou métricas
+4. **Agentes**
+
+   * Avaliação de contexto e tomada de decisão
+5. **Saída**
+
+   * Sinais, métricas, alertas ou ações automatizadas
+
+---
+
+## 6. Arquitetura de Agentes
+
+Os agentes seguem um modelo **orientado a decisão**, podendo evoluir por estágios:
+
+### Estágio 1 – Rule-Based
+
+* Regras determinísticas
+* Fácil explicabilidade
+* Baixo risco
+
+### Estágio 2 – Estatístico / ML
+
+* Probabilidade e inferência
+* Avaliação de cenários
+* Métricas de confiança
+
+### Estágio 3 – LLM / Agentes Autônomos
+
+* Interpretação de contexto
+* Orquestração de múltiplos agentes
+* Decisões assistidas por linguagem natural
+
+> A arquitetura suporta **coexistência** entre estágios.
+
+---
+
+## 7. Governança, Risco e Compliance
+
+* Separação clara entre **código**, **dados** e **configuração**
+* Dados sensíveis **não versionados**
+* Preparação para:
+
+  * Auditoria
+  * Reprodutibilidade
+  * Controles internos
+* Estrutura compatível com ambientes regulados
+
+---
+
+## 8. Observabilidade e Qualidade
+
+Mesmo em estágio inicial, a arquitetura é preparada para:
+
+* Logs estruturados
+* Métricas de pipeline
+* Testes automatizados
+* Monitoramento futuro
+
+---
+
+## 9. Escalabilidade e Evolução
+
+A arquitetura permite evolução natural para:
+
+* APIs de consumo externo
+* Execução distribuída
+* Orquestração (Airflow, Prefect, etc.)
+* Integração com cloud providers
+* Ambientes multi-usuário
+
+---
+
+## 10. Decisões Arquiteturais Importantes (ADR – visão inicial)
+
+* ❌ Não usar frameworks pesados prematuramente
+* ✅ Priorizar clareza sobre abstração excessiva
+* ✅ Preparar o projeto para produção desde o início
+* ❌ Evitar acoplamento entre notebooks e pipelines
+
+---
+
+## 11. Limitações Conhecidas (Atual)
+
+* Execução local predominante
+* Sem orquestrador formal
+* Sem camada de API exposta
+
+Essas limitações são **intencionais** nesta fase.
+
+---
+
+## 12. Próximos Passos Arquiteturais
+
+1. Criar **diagramas formais** (C4 – Context / Container)
+2. Definir **contratos entre pipelines e agentes**
+3. Introduzir **testes de integração**
+4. Avaliar **orquestração de pipelines**
+5. Preparar camada de **exposição (API / serviço)**
+
+---
+
+## 13. Conclusão
+
+A arquitetura do **Mercadofinanceiro_app** foi desenhada para **crescer com segurança**, equilibrando inovação, engenharia e controle de risco.
+Ela não otimiza para o curto prazo, mas para **sustentabilidade técnica e estratégica**.
+
+
